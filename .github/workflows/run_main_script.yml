@@ -2,6 +2,8 @@ name: Run main script
 
 on:
   workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   run_main_script:

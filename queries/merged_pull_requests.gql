@@ -1,0 +1,16 @@
+{
+  viewer {
+    pullRequests(first: 100, states: MERGED) {
+      totalCount
+      nodes {
+        title, url, createdAt, mergedAt, repository {
+          nameWithOwner
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+      }
+    }
+  }
+}

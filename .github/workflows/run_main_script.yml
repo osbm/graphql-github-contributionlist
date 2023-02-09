@@ -15,4 +15,4 @@ jobs:
 
       - name: run main script using github actions token
         run: |
-          python main.py --token ${{ secrets.GITHUB_TOKEN }}
+          python main.py --token ${{ secrets.GH_TOKEN }}

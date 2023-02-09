@@ -1,0 +1,18 @@
+name: Run main script
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run_main_script:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: run main script using github actions token
+        run: |
+          python main.py --token ${{ secrets.GITHUB_TOKEN }}

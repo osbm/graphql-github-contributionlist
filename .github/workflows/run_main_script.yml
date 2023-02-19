@@ -19,14 +19,17 @@ jobs:
         run: |
           python main.py --token ${{ secrets.GH_TOKEN }}
 
-      - name: Push all csv files to repo in a gh-pages branch without history
 
-        run: |
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git config --global user.name "github-actions[bot]"
-          git checkout -b gh-pages
-          git add .
-          git commit -m "Update csv files"
-          git push origin gh-pages --force
-          
-      
+      - name: Upload the artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: results
+          path: results
+
+      - name: Deploy the pdf file
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./results
+          publish_branch: gh-pages
+          force_orphan: true

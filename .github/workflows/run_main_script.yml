@@ -19,13 +19,14 @@ jobs:
         run: |
           python main.py --token ${{ secrets.GH_TOKEN }}
 
-      - name: Push all csv files to repo in a empty branch
+      - name: Push all csv files to repo in a gh-pages branch without history
+
         run: |
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           git config --global user.name "github-actions[bot]"
-          git checkout --orphan gh-pages
-          git rm -rf .
-          git add *.csv
-          git commit -m "Add csv files"
-          git push origin gh-pages
+          git checkout -b gh-pages
+          git add .
+          git commit -m "Update csv files"
+          git push origin gh-pages --force
+          
       

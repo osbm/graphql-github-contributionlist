@@ -21,6 +21,8 @@ else:
 url = 'https://api.github.com/graphql'
 headers = {"Authorization": "Bearer " + gh_token}
 
+os.mkdir("results")
+
 def run_query(query): # A simple function to use requests.post to make the API call. Note the json= section.
     request = requests.post('https://api.github.com/graphql', json={'query': query}, headers=headers)
     if request.status_code == 200:
@@ -34,7 +36,9 @@ with open("queries/contributed_repositories.gql", "r") as f:
 
 result = run_query(query)
 df = pd.DataFrame(result['data']['viewer']['repositoriesContributedTo']['nodes'])
-df.to_csv('repositories_contributed_to.csv', index=False)
+df = df[df["visibility"] == "PUBLIC"] # lets only look at public repos
+
+df.to_csv('results/repositories_contributed_to.csv', index=False)
 
 with open("queries/merged_pull_requests.gql", "r") as f:
     pr_query = f.read()
@@ -68,4 +72,4 @@ for repo in repos:
 stars_of_pr_df = pd.DataFrame(star_counts, columns=["repository", "stars"])
 pr_df = pr_df.merge(stars_of_pr_df, on="repository")
 pr_df = pr_df.sort_values(by="stars", ascending=False)
-pr_df.to_csv('merged_pull_requests_with_stars.csv', index=False)
+pr_df.to_csv('results/merged_pull_requests_with_stars.csv', index=False)
